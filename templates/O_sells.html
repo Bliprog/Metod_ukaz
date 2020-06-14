@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Отчет: продажи{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% if user.is_superuser %}
+    <form method="post" class="form-group">
+{% csrf_token %}
+{{form|crispy}}<br>
+<button type="submit" class="btn btn-success">Отчет</button>
+</form>
+{% if is_otchet  %}
+       <table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Код продукта</th>
+        <th scope="col">Название</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Продано штук</th>
+        <th scope="col">Доход</th>
+    </tr>
+    </thead>
+    {% for prod in products %}
+    <tr>
+        <th scope="row">{{ prod.code_product}}</th>
+        <td>{{ prod.name }}</td>
+        <td>{{ prod.price }}</td>
+        <td>{{ prod.count }}</td>
+        <td>{{ prod.sum}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    <p>Итоговый доход: {{ all_sum }}</p>
+{% endif %}
+        {% else %}
+        <p>Вернитесь на <a href="{% url 'main' %}">главную</a></p>
+    {% endif %}
+{% endblock %}

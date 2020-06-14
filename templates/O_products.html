@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Отчет: оставшаяся продукция{% endblock %}
+{% block content %}
+    <table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Код продукта</th>
+        <th scope="col">Производитель</th>
+        <th scope="col">Название</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Осталось на складе</th>
+    </tr>
+    </thead>
+    {% for prod in products %}
+    <tr>
+        <th scope="row">{{ prod.pk}}</th>
+        <td>{{ prod.creator.name}}</td>
+        <td>{{ prod.name }}</td>
+        <td>{{ prod.price_p }}</td>
+        <td>{{ prod.count}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

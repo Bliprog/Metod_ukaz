@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block title %}Создание заказа{% endblock %}
+{% block content %}
+    <table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Производитель</th>
+        <th scope="col">Название</th>
+        <th scope="col">ЦП</th>
+        <th scope="col">Видеокарта</th>
+        <th scope="col">Кол-во ОЗУ</th>
+        <th scope="col">Кол-во ПЗУ</th>
+        <th scope="col">Длина</th>
+        <th scope="col">Ширина</th>
+        <th scope="col">Толщина</th>
+        <th scope="col">Цена</th>
+    </tr>
+    </thead>
+    {% for product in products %}
+    <tr>
+        <th scope="row">{{ product.code_product}}</th>
+        <td>{{ product.creator.name }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.cpu.name }}</td>
+        <td>{{ product.gpu.name}}</td>
+        <td>{{ product.ram }}</td>
+        <td>{{ product.rom }}</td>
+        <td>{{ product.length }}</td>
+        <td>{{ product.width }}</td>
+        <td>{{ product.height }}</td>
+        <td>{{ product.price_p }}</td>
+        <td><button id ='btn' class="btn btn-success" onclick="f({{product.code_product}})">Добавить в корзину</button></td>
+    </tr>
+    {% endfor %}
+    </table>
+    <br>
+    <h2 class="mt-2">Ваш Заказ</h2>
+    <hr class="mt-0 mb-4">
+    <table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Код продукта</th>
+        <th scope="col">Производитель</th>
+        <th scope="col">Название</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Количество</th>
+    </tr>
+    </thead>
+    {% for order_product in order_products %}
+    <tr>
+        <th scope="row">{{ order_product.product.code_product}}</th>
+        <td>{{ order_product.product.creator.name }}</td>
+        <td>{{ order_product.product.name }}</td>
+        <td>{{ order_product.product.price_p }}</td>
+        <td>{{ order_product.count}}</td>
+        <td><button id ='btn' class="btn btn-danger" onclick="ff({{order_product.product.code_product}})">Удалить из корзины</button></td>
+    </tr>
+    {% endfor %}
+    </table>
+    <p>Общая стоимость: {{ sum }}</p>
+    <button class="btn btn-success" onclick="ffn()">Оформить заказ</button>
+    <script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
+    <script>
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+    function f(num) {
+       a=prompt("Введите количество товара");
+       $.ajax({
+                      type: "POST",
+                      url: "http://127.0.0.1:8000/create_order/",
+                      dataType: "json",
+                      data: {
+                          'type':'add_p',
+                          'num':num,
+                          'count':a},
+            headers: { "X-CSRFToken": "{{ csrf_token }}" },
+            success: function(data) {
+        console.log(data);
+      },
+      error: function(er) {
+        console.log(er);
+      }
+    });
+    }
+      function ff(num) {
+       a=prompt("Введите количество товара");
+       $.ajax({
+                      type: "POST",
+                      url: "http://127.0.0.1:8000/create_order/",
+                      dataType: "json",
+                      data: {
+                          'type':'delete_p',
+                          'num':num,
+                          'count':a},
+            headers: { "X-CSRFToken": "{{ csrf_token }}" },
+            success: function(data) {
+        console.log(data);
+      },
+      error: function(er) {
+        console.log(er);
+      }
+    });
+    }
+     function ffn() {
+       $.ajax({
+                      type: "POST",
+                      url: "http://127.0.0.1:8000/create_order/",
+                      dataType: "json",
+                      data: {
+                          'type':'confirm_order'
+                          },
+            headers: { "X-CSRFToken": "{{ csrf_token }}" },
+            success: function(data) {
+        console.log(data);
+      },
+      error: function(er) {
+        console.log(er);
+      }
+    });
+    }
+</script>
+{% endblock %}

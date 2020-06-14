@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Отчет: отмененные заказы{% endblock %}
+{% block content %}
+    {% if user.is_superuser %}
+    <form method="post" class="form-group">
+{% csrf_token %}
+{{form|crispy}}<br>
+<button type="submit" class="btn btn-success">Отчет</button>
+</form>
+{% if is_otchet  %}
+    <p>Всего отменено заказов за выбранный период: {{ count_orders }}</p>
+{% endif %}
+        {% else %}
+        <p>Вернитесь на <a href="{% url 'main' %}">главную</a></p>
+    {% endif %}
+{% endblock %}
