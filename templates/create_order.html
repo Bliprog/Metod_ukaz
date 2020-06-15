@@ -92,7 +92,7 @@
                           'count':a},
             headers: { "X-CSRFToken": "{{ csrf_token }}" },
             success: function(data) {
-        console.log(data);
+       window.location.reload();
       },
       error: function(er) {
         console.log(er);
@@ -128,7 +128,7 @@
                           },
             headers: { "X-CSRFToken": "{{ csrf_token }}" },
             success: function(data) {
-        console.log(data);
+        window.location.href='{%url 'main'%}'
       },
       error: function(er) {
         console.log(er);

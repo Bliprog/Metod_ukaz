@@ -8,7 +8,7 @@ from django.contrib.auth.forms import *
 from django import forms
 import datetime
 import json
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from itertools import chain
 
 def regiser (request):
@@ -36,7 +36,9 @@ def main(request):
             for order_prod in orders_products:
                 order_prod.product.count+=order_prod.count
             order.save()
-            return redirect('create_order')
+            return JsonResponse({
+                'success': True
+            })
         else:
             orders = Order.objects.filter(client=Client.objects.get(user=request.user), is_created=True)
             context['orders']=orders
@@ -98,8 +100,9 @@ def create_order(request):
                         order_prod.product.count=0
                         order_prod.product.save()
                 order.save()
-                return redirect('main',request)
-            return redirect('create_order',request)
+            return JsonResponse({
+                'success': True
+            })
 
     else:
         return redirect('login')

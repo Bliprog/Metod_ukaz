@@ -43,7 +43,7 @@
                           },
             headers: { "X-CSRFToken": "{{ csrf_token }}" },
             success: function(data) {
-        console.log(data);
+        window.location.reload()
       },
       error: function(er) {
         console.log(er);
